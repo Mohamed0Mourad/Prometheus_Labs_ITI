@@ -1,5 +1,5 @@
 
-## 1.1 Installing prometheus as a service steps
+## 1 Installing prometheus as a service steps
 
 > 1. add `Prometheus` user with no shell:
 
@@ -145,6 +145,47 @@ sudo systemctl status node_exporter
 sudo systemctl enable node_exporter
 ```
 The `Node_Exporter` listens on HTTP port `9100` by default.
+![Node Exporter](https://github.com/Mohamed0Mourad/Prometheus_Labs_ITI/blob/main/NodeExporter_port9100.jpg)
+
 
 go to `/etc/prometheus/prometheus.yml` to add another item in the scrabers section.
+I added my server that i worked on 
+```
+
+  - job_name: "ubuntu-ec2"
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ["localhost:9100"]
+
+```
+![Add Target](https://github.com/Mohamed0Mourad/Prometheus_Labs_ITI/blob/main/addtarget.jpg)
+
+# 3. Run C-Advisor Container
+we need run C-Advisor as a container to monitor all containers in the same server
+```
+sudo docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  --privileged \
+  --device=/dev/kmsg \
+  gcr.io/cadvisor/cadvisor
+```
+# Add C-advisor target
+```
+ - job_name: "c-advisor-containers"
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ["localhost:8080"]
+```
+The C-Advisor listens on HTTP port 8080 by default.
+I run 2 containers on the server so, you can see the metrics of them by filtering which one you need
+![c-advisor-containers](https://github.com/Mohamed0Mourad/Prometheus_Labs_ITI/blob/main/c-advisor-containers.png)
 
