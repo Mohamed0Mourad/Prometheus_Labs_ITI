@@ -13,8 +13,8 @@
 ### **2. Database Used by Prometheus** 🗃️  
 ### **3. Metrics Types in Prometheus** 📊  
 ### **4. Install Prometheus** 🛠️  
-### **5. Add a Target & Query** ➕  
-### **6. Monitor Remote Containers** 🐳  
+### **5. Add any new target to Prometheus.yaml  file to monitor different servers and run any query on it using promql language ** ➕  
+### **6. Monitor running containers on a different server than Prometheus one ** 🐳  
 
 ---
 
